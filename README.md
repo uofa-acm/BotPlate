@@ -1,5 +1,6 @@
 BotPlate
-=====
+===== 
+<img src=botplate.png height=256 width=256></img>
 
 A Java IRC bot template-ish thing.
 
