@@ -2,7 +2,7 @@ package com.mgaut72.IRCProtocol;
 
 import java.util.*;
 
-class Message {
+public class Message {
 
     private String prefix;
     private String command;
