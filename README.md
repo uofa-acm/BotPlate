@@ -1,4 +1,4 @@
-IRCBot
+BotPlate
 =====
 
 A Java IRC bot template-ish thing.
