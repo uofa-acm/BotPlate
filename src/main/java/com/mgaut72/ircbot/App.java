@@ -1,6 +1,6 @@
-package com.mgaut72.javabot;
+package com.mgaut72.ircbot;
 
-import com.mgaut72.javabot.JavaBot;
+import com.mgaut72.ircbot.IRCBot;
 import java.util.*;
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public class App
         String channel = "#uofa-acm";
         String nick = "exampleBot";
         int port = 6667;
-        JavaBot bot = new JavaBot(host, channel, nick, port);
+        IRCBot bot = new IRCBot(host, channel, nick, port);
 
         bot.addHandler(new MessageHandler(bot){
             void handle(String message){
@@ -25,11 +25,7 @@ public class App
             }
         });
 
-        try {
-            bot.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        bot.run();
 
     }
 }

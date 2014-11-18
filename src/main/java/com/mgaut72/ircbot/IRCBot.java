@@ -1,4 +1,4 @@
-package com.mgaut72.javabot;
+package com.mgaut72.ircbot;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.*;
 
-public class JavaBot {
+public class IRCBot {
 
     // IRC variables
     private String nick;
@@ -24,7 +24,7 @@ public class JavaBot {
     // message handlers
     private List<MessageHandler> handlers;
 
-    public JavaBot(String host, String channel, String nick, int port){
+    public IRCBot(String host, String channel, String nick, int port){
         this.host = host;
         this.channel = channel;
         this.nick = nick;
@@ -64,23 +64,30 @@ public class JavaBot {
         writeLine("PRIVMSG " + target + " :" + message);
     }
 
-    public void run() throws IOException {
-        socket = new Socket(host, port);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    public void run() {
+        try{
+            socket = new Socket(host, port);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        writeLine("NICK :" + nick);
-        writeLine("USER " + nick + " * * :" + nick);
-        writeLine("JOIN :" + channel);
+            writeLine("NICK :" + nick);
+            writeLine("USER " + nick + " * * :" + nick);
+            writeLine("JOIN :" + channel);
 
-        String line = null;
+            String line = null;
 
-        while((line = in.readLine()) != null) {
-            System.out.println(">>> " + line);
+            while((line = in.readLine()) != null) {
+                System.out.println(">>> " + line);
 
-            for (MessageHandler mh : handlers){
-                mh.handle(line);
+                for (MessageHandler mh : handlers){
+                    mh.handle(line);
+                }
             }
+        }
+        catch(Exception e){
+            System.err.println("Cannot connect and operate bot");
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
