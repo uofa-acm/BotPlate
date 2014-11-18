@@ -50,13 +50,14 @@ class Message {
         command = rawMessage.substring(currIdx,commandEnd);
         currIdx = commandEnd;
 
-        // message ends with "\r\n"
-        if(rawMessage.startsWith("\r\n", currIdx))
-            return;
 
         // if we make it here, we have at least 1 parameter
         int numParams = 0;
         while(true){
+
+            // message ends with "\r\n"
+            if(rawMessage.startsWith("\r\n", currIdx))
+                return;
 
             currIdx++; // skip over ' '
 
@@ -82,6 +83,12 @@ class Message {
             // parsing another parameter
             else{
                 int paramEnd = rawMessage.indexOf(' ', currIdx);
+
+                // hit end of params with no trailing
+                if(paramEnd < 0){
+                    paramEnd = rawMessage.length()-2;
+                }
+
                 parameters.add(rawMessage.substring(currIdx, paramEnd));
                 currIdx = paramEnd;
                 numParams++;
