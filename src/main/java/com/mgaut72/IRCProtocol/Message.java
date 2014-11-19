@@ -15,19 +15,15 @@ public class Message {
         trailing = "";
         parameters = new ArrayList<String>();
 
-        int currIdx = 0; // this will be the index of the first unparsed char
-
         /*
          * parse optional prefix.
          * we know we have a prefix when there is a ':' leading the message
          */
         if(rawMessage.startsWith(":")){
             // prefix goes until the first space character
-            currIdx++; // skip over ':'
-            int prefixEnd = rawMessage.indexOf(' ', currIdx);
-            prefix = rawMessage.substring(currIdx, prefixEnd);
-
-            currIdx = prefixEnd + 1;
+            int prefixEnd = rawMessage.indexOf(' ');
+            prefix = rawMessage.substring(1,prefixEnd);
+            rawMessage = rawMessage.substring(prefixEnd+1);
         }
 
         /*
@@ -36,64 +32,58 @@ public class Message {
          * or [0-9]{3}
          * followed by a space
          */
-        int commandEnd = currIdx;
-        char c = rawMessage.charAt(commandEnd);
-        if(Character.isDigit(c)){
-            commandEnd += 3;
+        int commandEnd = rawMessage.indexOf(' ');
+        if(commandEnd < 0){
+            commandEnd = rawMessage.length();
         }
-        else{
-            while(Character.isAlphabetic(c)){
-                commandEnd++;
-                c = new Character(rawMessage.charAt(commandEnd));
-            }
+        command = rawMessage.substring(0,commandEnd);
+
+        // see if we are out of input
+        if(commandEnd == rawMessage.length()){
+            validate();
+            return;
         }
-        command = rawMessage.substring(currIdx,commandEnd);
-        currIdx = commandEnd;
 
+        // skip over the whitespace before params
+        rawMessage = rawMessage.substring(commandEnd);
 
-        // if we make it here, we have at least 1 parameter
-        int numParams = 0;
-        while(true){
+        /* from here, there are optionally up to 14 parameters
+         * followed by the "trailing" feild
+         */
 
-            // message ends with "\r\n"
-            if(rawMessage.startsWith("\r\n", currIdx))
-                return;
+        // if we have ":" this indicates the start of the trailing section
+        if(rawMessage.contains(" :")){
+            String[] parts = rawMessage.split(" :");
+            trailing = parts[1];
 
-            currIdx++; // skip over ' '
-
-            // maximal number of parameters, must now be parsing trailing
-            if(numParams == 14){
-                // when numParams is max, ":" is optional
-                if(rawMessage.startsWith(":", currIdx)){
-                    currIdx++;
+            if (!parts[0].isEmpty()){
+                String params = parts[0].substring(1);
+                for (String s : params.split(" ")){
+                    if (!s.isEmpty()){
+                        parameters.add(s);
+                    }
                 }
-
-                // trailing is the rest, except for the \r\n at the end
-                trailing = rawMessage.substring(currIdx, rawMessage.length() -2);
-                return;
-            }
-            // found a ':' so must be parsing a trailing
-            else if(rawMessage.startsWith(":", currIdx)){
-                currIdx++;
-
-                // trailing is the rest, except for the \r\n at the end
-                trailing = rawMessage.substring(currIdx, rawMessage.length() -2);
-                return;
-            }
-            // parsing another parameter
-            else{
-                int paramEnd = rawMessage.indexOf(' ', currIdx);
-
-                // hit end of params with no trailing
-                if(paramEnd < 0){
-                    paramEnd = rawMessage.length()-2;
-                }
-
-                parameters.add(rawMessage.substring(currIdx, paramEnd));
-                currIdx = paramEnd;
-                numParams++;
             }
         }
+        else {
+            /* if there is no " :", there is either no trailing,
+             * or 14 params then trailing
+             */
+            String[] parts = rawMessage.substring(1).split(" ");
+            for(int i=0; i<parts.length; i++){
+                if(i < 14){
+                    parameters.add(parts[i]);
+                }
+                else{
+                    trailing += parts[i];
+                }
+            }
+        }
+        validate();
+    }
+
+    private void validate(){
+        //TODO
     }
 
     public String getPrefix(){

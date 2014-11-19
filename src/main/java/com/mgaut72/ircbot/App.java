@@ -15,7 +15,7 @@ public class App
     public static void main(String [] args){
         String host = "irc.freenode.net";
         String channel = "#uofa-acm";
-        String nick = "mattttBot";
+        String nick = "exampleBot";
         int port = 6667;
         IRCBot bot = new IRCBot(host, channel, nick, port);
 

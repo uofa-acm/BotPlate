@@ -35,7 +35,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = ":<prefix> command params :<trailing>\r\n";
+        raw = ":<prefix> command params :<trailing>";
         msg = new Message(raw);
         assertEquals("<prefix>", msg.getPrefix());
         assertEquals("command", msg.getCommand());
@@ -48,7 +48,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = "command params :<trailing>\r\n";
+        raw = "command params :<trailing>";
         msg = new Message(raw);
         assertEquals("", msg.getPrefix());
         assertEquals("command", msg.getCommand());
@@ -61,7 +61,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = ":<prefix> command :<trailing>\r\n";
+        raw = ":<prefix> command :<trailing>";
         msg = new Message(raw);
         assertEquals("<prefix>", msg.getPrefix());
         assertEquals("command", msg.getCommand());
@@ -73,7 +73,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = "command :<trailing>\r\n";
+        raw = "command :<trailing>";
         msg = new Message(raw);
         assertEquals("", msg.getPrefix());
         assertEquals("command", msg.getCommand());
@@ -85,7 +85,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = "command\r\n";
+        raw = "command";
         msg = new Message(raw);
         assertEquals("", msg.getPrefix());
         assertEquals("command", msg.getCommand());
@@ -97,7 +97,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = "000\r\n";
+        raw = "000";
         msg = new Message(raw);
         assertEquals("", msg.getPrefix());
         assertEquals("000", msg.getCommand());
@@ -109,7 +109,7 @@ public class MessageTest extends TestCase {
         String raw;
         Message msg;
 
-        raw = ":<prefix> command param1 param2 param3 :<trailing>\r\n";
+        raw = ":<prefix> command param1 param2 param3 :<trailing>";
         msg = new Message(raw);
 
         assertEquals("<prefix>", msg.getPrefix());
@@ -122,10 +122,11 @@ public class MessageTest extends TestCase {
     }
 
     public void testParamListNoTrailing(){
+        System.out.println("param list no trailing");
         String raw;
         Message msg;
 
-        raw = ":<prefix> command param1 param2 param3\r\n";
+        raw = ":<prefix> command param1 param2 param3";
         msg = new Message(raw);
 
         assertEquals("<prefix>", msg.getPrefix());
@@ -144,7 +145,7 @@ public class MessageTest extends TestCase {
         raw = ":<prefix> command "
             + "param1 param2 param3 param4 param5 param6 "
             + "param7 param8 param9 param10 param11 param12 param13 param14 "
-            + ":<trailing>\r\n";
+            + ":<trailing>";
         msg = new Message(raw);
 
         assertEquals("<prefix>", msg.getPrefix());
@@ -174,7 +175,7 @@ public class MessageTest extends TestCase {
         raw = ":<prefix> command "
             + "param1 param2 param3 param4 param5 param6 "
             + "param7 param8 param9 param10 param11 param12 param13 param14 "
-            + "<trailing>\r\n";
+            + "<trailing>";
         msg = new Message(raw);
 
         assertEquals("<prefix>", msg.getPrefix());
@@ -204,7 +205,7 @@ public class MessageTest extends TestCase {
         raw = ":<prefix> command "
             + "param1 param2 param3 param4 param5 param6 "
             + "param7 param8 param9 param10 param11 param12 param13 "
-            + "param14\r\n";
+            + "param14";
         msg = new Message(raw);
 
         assertEquals("<prefix>", msg.getPrefix());
