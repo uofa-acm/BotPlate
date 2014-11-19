@@ -79,7 +79,7 @@ public class IRCBot {
             String line = null;
 
             while((line = in.readLine()) != null) {
-                System.out.println(">>> " + line);
+                System.out.println("<<< " + line);
                 Message msg = new Message(line);
 
                 for (MessageHandler mh : handlers){
