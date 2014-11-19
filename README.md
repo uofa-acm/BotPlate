@@ -39,8 +39,12 @@ stores it as an instance variable called `bot`.
 There is exactly one abstract method:
 
 ```
-abstract void handle(String message);
+abstract void handle(Message message);
 ```
+
+Where `Message` is an object corresponding to the parts defined in
+the IRC client protocol,
+[RFC 2812](https://tools.ietf.org/html/rfc2812#section-2.3)
 
 Create `MessageHandler`s and add them to instances of `IRCBot`s to augment
 their functionality.
