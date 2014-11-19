@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.*;
 
+import com.mgaut72.IRCProtocol.Message;
+
 public class IRCBot {
 
     // IRC variables
@@ -34,9 +36,9 @@ public class IRCBot {
 
         //Need to respond "PONG" when pinged or server drops us
         MessageHandler pingHandler = new MessageHandler(this) {
-            void handle(String message){
-                if(message.startsWith("PING "))
-                    bot.writeLine(message.replace("PING", "PONG"));
+            void handle(Message message){
+                if(message.getCommand().equals("PING"))
+                    bot.writeLine("PONG :" + message.getTrailing());
             }
         };
         handlers.add(pingHandler);
@@ -78,9 +80,10 @@ public class IRCBot {
 
             while((line = in.readLine()) != null) {
                 System.out.println("<<< " + line);
+                Message msg = new Message(line);
 
                 for (MessageHandler mh : handlers){
-                    mh.handle(line);
+                    mh.handle(msg);
                 }
             }
         }

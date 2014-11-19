@@ -1,6 +1,7 @@
 package com.mgaut72.ircbot;
 
 import com.mgaut72.ircbot.IRCBot;
+import com.mgaut72.IRCProtocol.Message;
 
 abstract class MessageHandler {
 
@@ -10,7 +11,7 @@ abstract class MessageHandler {
         this.bot = bot;
     }
 
-    abstract void handle(String message);
+    abstract void handle(Message message);
 }
 
 
